@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
-use App\Models\ContactPerson;
+use App\Http\Requests\RegisterRequest;
 use App\Models\Role;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
+use App\Repositories\UserRepository;
+use App\Services\ContactPersonService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -40,8 +41,10 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct(
+        private UserRepository $userRepository,
+        private ContactPersonService $contactPersonService
+    ){
         $this->middleware('guest');
     }
 
@@ -74,34 +77,27 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(array $client)
     {
-        $role = Role::findByName($data['role'])->first();
-        
+        $role = Role::findByName($client['role'])->first();
+
         $clientUuid = null;
       
-        if ($data['role'] === RoleEnum::Client->value) {
+        if ($role->name === RoleEnum::Client->value) {
             $clientUuid = Str::uuid();
         }
+       
+        $data['name'] = $client['name'];
+        $data['email'] = $client['email'];
+        $data['password'] = Hash::make($client['password']);
+        $data['address'] = $client['address'];
+        $data['role_id'] = $role->id;
+        $data['client_uuid'] = $clientUuid;
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'address' => $data['address'],
-            'role_id' => $role->id,
-            'client_uuid' => $clientUuid
-        ]);
+        $user = $this->userRepository->create($data);
 
-        $contactPeople = [];
-        if (count($data['contacts']) > 0 && isset($clientUuid)) {
-            foreach ($data['contacts'] as $key => $value) {
-                $contactPeople[$key] = ContactPerson::create([
-                    'name' => $value,
-                    'phone_number' => $data['phoneNumbers'][$key],
-                    'user_id' => $user->id
-                ]);
-            }
+        if (isset($clientUuid)) {
+            $this->contactPersonService->createContactPerson($client, $user, $clientUuid);
         }
 
         return $user;

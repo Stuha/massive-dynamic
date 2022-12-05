@@ -29,11 +29,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $role = Role::where('id', $user->role_id)->first();
-       
-        if ($role->name === RoleEnum::Client->value) {
-            $clients = $this->userRepository->findClientByUuid($user->client_uuid);
+        if (Auth::user()->role->name === RoleEnum::Client->value) {
+            $clients = $this->userRepository->findClientByUuid(Auth::user()->client_uuid);
         } else {
             $clients = $this->userRepository->findAllClients();
         }
