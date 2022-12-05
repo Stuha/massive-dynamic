@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +26,6 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/delete/{id}', 'delete')->name('delete');
 });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/upload-file', [FileController::class, 'upload'])->name('upload-file');
+
 
