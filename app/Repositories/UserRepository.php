@@ -14,6 +14,11 @@ class UserRepository
     {
     }
 
+    public function create(array $data):User
+    {
+        return $this->model->create($data);
+    }
+
     public function findClientByUuid(string $uuid)
     {
         return $this->model->where('client_uuid', $uuid)->get();
