@@ -20,16 +20,19 @@
             <li class="list-group-item">{{$client->email}}</li>
         </ul>
 
+        @if(in_array(\App\Enums\PermissionEnum::Edit->value, $userPermissions))
         <div class="btn-group me-2 ">
             <a href="{{ route('update', ['uuid' => $client->client_uuid]) }}" class="btn btn-primary ml-2">Edit</a>
         </div>
-
+        @endif 
+        @if(in_array( \App\Enums\PermissionEnum::Delete->value, $userPermissions))
         <div class="btn-group me-2">
             <form method="POST" action="{{ route('delete', $client->id) }}">
                 @csrf
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </div>
+        @endif
     </div>
 </div>
 @endsection

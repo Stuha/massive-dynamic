@@ -25,5 +25,5 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/delete/{id}', 'delete')->name('delete');
 });
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 

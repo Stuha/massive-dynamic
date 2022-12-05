@@ -6,6 +6,7 @@ use App\Enums\RoleEnum;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository
 {
@@ -18,11 +19,11 @@ class UserRepository
         return $this->model->where('client_uuid', $uuid)->get();
     }
 
-    public function findAllClients():Collection
+    public function findAllClients():LengthAwarePaginator
     {
         $clientRole = Role::findByName(RoleEnum::Client)->first();
 
-        return $this->model->where('role_id', $clientRole->id)->get();
+        return $this->model->where('role_id', $clientRole->id)->paginate(25);
     }
 
     public function update(array $data):bool

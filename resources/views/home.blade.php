@@ -19,6 +19,8 @@
             </div>
         </div>
     </div>
+    @if(count($clients) > 1)
+        {{$clients->links() }}
+    @endif
 </div>
-
 @endsection
