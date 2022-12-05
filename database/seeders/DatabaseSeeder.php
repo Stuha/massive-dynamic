@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
         User::factory(20)->create(['role_id' => $client->id, 'client_uuid' => Str::uuid()])->each(function ($user)
         {
             $contactPersons = ContactPerson::factory()->count(rand(1, 4))->make();
-            $user->contactPersons()->saveMany($contactPersons);
+            $user->contactPerson()->saveMany($contactPersons);
         });
     }
 }
