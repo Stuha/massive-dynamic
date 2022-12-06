@@ -18,6 +18,11 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->model->create($data);
     }
 
+    public function update(array $data):bool
+    {
+        return $this->model->where('id', $data['id'])->update($data);
+    }
+
     public function fetchAll():Collection
     {
         return $this->model->all();
