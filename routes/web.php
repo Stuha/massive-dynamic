@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FileController;
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::controller(HomeController::class)->group(function () {
+Route::controller(ClientController::class)->group(function () {
     Route::get('/', 'index')->name('home');
     Route::get('/client/{uuid}', 'show')->name('client');
     Route::get('/edit', 'update')->name('update');
@@ -27,5 +27,6 @@ Route::controller(HomeController::class)->group(function () {
 });
 
 Route::post('/upload-file', [FileController::class, 'upload'])->name('upload-file');
+Route::post('/assign-file', [FileController::class, 'assignFile'])->name('assign-file');
 
 

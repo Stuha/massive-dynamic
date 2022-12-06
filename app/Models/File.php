@@ -10,4 +10,9 @@ class File extends Model
     use HasFactory;
 
     public $guarded = [];
+
+    public function users()
+    {
+        $this->belongsTo(User::class);
+    }
 }

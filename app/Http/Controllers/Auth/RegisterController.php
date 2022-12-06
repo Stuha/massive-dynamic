@@ -84,7 +84,7 @@ class RegisterController extends Controller
         $clientUuid = null;
       
         if ($role->name === RoleEnum::Client->value) {
-            $clientUuid = Str::uuid();
+            $clientUuid = Str::uuid()->toString();
         }
        
         $data['name'] = $client['name'];

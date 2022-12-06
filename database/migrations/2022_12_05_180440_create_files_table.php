@@ -18,7 +18,8 @@ class CreateFilesTable extends Migration
             $table->string('filename');
             $table->string('mime_type');
             $table->string('path');
-            $table->integer('user_id')->nullable();
+            $table->integer('user_id');
+            $table->boolean('assigned')->default(false);
             $table->unsignedBigInteger('size');
             $table->timestamps();
         });

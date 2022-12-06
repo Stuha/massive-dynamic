@@ -19,22 +19,8 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">{{$client->email}}</li>
         </ul>
-
+        <p>
         @if(in_array(\App\Enums\PermissionEnum::Edit->value, $userPermissions))
-        <div class="container">
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Dropdown Example
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">About Us</a></li>    
-                </ul>
-            </div>
-        </div>
-
         <div class="btn-group me-2 ">
             <a href="{{ route('update', ['uuid' => $client->client_uuid]) }}" class="btn btn-primary ml-2">Edit</a>
         </div>
@@ -47,7 +33,35 @@
             </form>
         </div>
         @endif
-
+        </p>
+        @if(in_array(\App\Enums\PermissionEnum::Edit->value, $userPermissions))
+            <p>
+            <h3>Assigned Documents</h3>
+            @foreach($assignedFiles as $assignedFile)
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{$assignedFile?->filename}}</li>
+            </ul>
+            @endforeach
+            </p>
+            @if(count($unassignedFiles) >0)
+            <p>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-expanded="false" aria-controls="menu">
+                Assign documet to client
+            </button>
+            </p>
+            
+            <div class="collapse dropdown-menu" id="menu">
+                @foreach($unassignedFiles as $unassignedFile)
+                <form method="post" action="{{ route('assign-file', ['id' => $unassignedFile->id, 'assigned' => true]) }}">
+                @csrf
+                    <input type="submit" name="submit" value="{{$unassignedFile->filename}}">
+                </form>
+                @endforeach
+            </div>
+            @else
+            <div>There are no unassigned files for this client</div>
+            @endif
+        @endif 
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
             <button type="button" class="close" data-dismiss="alert">×</button>
@@ -83,11 +97,5 @@
         </form>
         @endif
     </div>
-    <script>
-        $(document).ready(function(){
-            console.log($(".dropdown-toggle").dropdown())
-            $(".dropdown-toggle").dropdown();
-        });
-    </script>
 </div>
 @endsection

@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ContactPerson::class);
     }
+
+    function file()
+    {
+        return $this->hasMany(File::class);
+    }
 }
