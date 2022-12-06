@@ -49,10 +49,15 @@ class DatabaseSeeder extends Seeder
         User::factory()->create(['role_id' => $admin->id]);
         User::factory()->create(['role_id' => $secretary->id]);
 
-        User::factory(20)->create(['role_id' => $client->id, 'client_uuid' => Str::uuid()])->each(function ($user)
+        User::factory()->count(20)->create(['role_id' => $client->id])->each(function ($user)
         {
+            $uuid = Str::uuid()->toString();
+            $user->client_uuid = $uuid;
+            $user->save();
+          
             $contactPersons = ContactPerson::factory()->count(rand(1, 4))->make();
             $user->contactPerson()->saveMany($contactPersons);
         });
     }
 }
+
