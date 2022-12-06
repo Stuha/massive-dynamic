@@ -9,11 +9,12 @@
                     Clients
                 </div>
                 <ul class="list-group list-group-flush">
-                @foreach($clients as $client) 
-                <a class="text-decoration-none" href="{{ route('client', ['uuid' => $client->client_uuid]) }}" 
-                    data-bs-toggle="tooltip" data-bs-placement="right" title="Click to view details">
+                @foreach($clients as $key => $client) 
+                <a class="text-decoration-none" href="{{ route('client', ['uuid' => $clients[$key]->client_uuid]) }}" 
+                    title="Click to view details">
                     <li class="list-group-item">{{$client->name}}</li>
                 </a>
+                <br>
                 @endforeach
                 </ul>
             </div>

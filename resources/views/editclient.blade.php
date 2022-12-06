@@ -9,6 +9,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('update') }}">
                         @csrf
+                        <input type="hidden" name="id" value="{{$client->id}}">
                         <input type="hidden" name="uuid" value="{{$client->client_uuid}}">
             
                         <div class="row mb-3">

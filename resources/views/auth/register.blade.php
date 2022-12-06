@@ -126,7 +126,7 @@
 
                             <div class="col-md-6">
                                 <input id="admin" type="radio" class="form-check-input @error('role') is-invalid @enderror" name="role" value="{{\App\Enums\RoleEnum::Admin->value}}">
-                                <label for="admin" class="form-check-label">Amin</label><br>
+                                <label for="admin" class="form-check-label">Admin</label><br>
                                 <input id="secratary" type="radio" class="form-check-input @error('role') is-invalid @enderror" name="role" value="{{\App\Enums\RoleEnum::Secretary->value}}">
                                 <label for="secratary" class="form-check-label">Secratary</label><br>
                                 <input id="client" type="radio" class="form-check-input @error('role') is-invalid @enderror" name="role" value="{{\App\Enums\RoleEnum::Client->value}}">
