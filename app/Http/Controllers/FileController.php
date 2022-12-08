@@ -22,14 +22,18 @@ class FileController extends Controller
 
     public function upload(FileUploadRequest $request)
     {
-        $file = $request->file('file');
-        
-        $name = $this->service->storeFile($file);
+        $hasPermissions = $this->permissionService->checkPermissions(PermissionEnum::Read->value);
 
-   
-        return redirect()->back()
-            ->with('success','You have successfully upload file.')
-            ->with('file', $name);
+        if ($hasPermissions) {
+            $file = $request->file('file');
+            $name = $this->service->storeFile($file);
+
+            return redirect()->back()
+                ->with('success','You have successfully upload file.')
+                ->with('file', $name);
+        }
+
+        return redirect(route('home'));
     }
 
     public function assignFile(Request $request)
